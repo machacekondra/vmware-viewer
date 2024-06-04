@@ -2,7 +2,7 @@
 import React from 'react';
 import './App.css';
 import TabTable from './TabTable';
-import jsonData from './data.json';
+import jsonData from './data/data.json';
 
 function App() {
   return (
