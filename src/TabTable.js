@@ -4,53 +4,33 @@ import 'react18-json-view/src/style.css'
 import React, { useState, useEffect } from 'react';
 
 function TabTable({ jsonData }) {
-  const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const [activeSubTab, setActiveSubTab] = useState(null);
+  const [activeTab, setActiveTab] = useState(null);
   const [tabData, setTabData] = useState([]);
 
   useEffect(() => {
-    const defaultTab = Object.keys(jsonData[0])[0];
-    setActiveTabIndex(0);
-    setActiveSubTab(defaultTab);
-    setTabData(jsonData[0][defaultTab] || []);
+    console.log(Object.keys(jsonData));
+    const defaultTab = Object.keys(jsonData)[0]
+    setActiveTab(defaultTab);
+    setTabData(jsonData[defaultTab] || []);
   }, [jsonData]);
 
 
-  const handleTabClick = (index) => {
-    setActiveTabIndex(index);
-    const defaultTab = Object.keys(jsonData[index])[0];
-    setActiveSubTab(defaultTab); // Reset subtab index when changing tabs
-    setTabData(jsonData[index][defaultTab] || []);
-  };
-
-  const handleSubTabClick = (index, tabName) => {
-    setActiveTabIndex(index);
-    setActiveSubTab(tabName);
+  const handleTabClick = (tabName) => {
     console.log(tabName)
-    setTabData(jsonData[index][tabName] || []);
+    setActiveTab(tabName); // Reset subtab index when changing tabs
+    setTabData(jsonData[tabName] || []);
   };
 
   return (
     <div className="tab-table">
       <div className="tab-list">
-        {jsonData.map((tab, index) => (
+        {jsonData && Object.keys(jsonData).map((tabName) => (
           <button
-            key={index}
-            onClick={() => handleTabClick(index)}
-            className={activeTabIndex === index ? 'active' : ''}
+            key={tabName}
+            onClick={() => handleTabClick(tabName)}
+            className={activeTab === tabName ? 'active' : ''}
           >
-	    {`[appliance] ${jsonData[index]['summary']['hostname']}`}
-          </button>
-        ))}
-      </div>
-      <div className="subtab-list">
-        {jsonData[activeTabIndex] && Object.keys(jsonData[activeTabIndex]).map((subTab, tabName) => (
-          <button
-            key={subTab}
-            onClick={() => handleSubTabClick(activeTabIndex, subTab)}
-            className={activeSubTab === subTab ? 'active' : ''}
-          >
-            {subTab}
+            {tabName}
           </button>
         ))}
       </div>
